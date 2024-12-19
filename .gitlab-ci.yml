@@ -1,0 +1,31 @@
+default:
+  image: bitnami/java:11
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  MAVEN_OPTS: >-
+    -Dhttps.protocols=TLSv1.2
+    -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+  MAVEN_CLI_OPTS: >-
+    -DskipTests
+
+build-JAR:
+  stage: build
+  script:
+    - './mvnw $MAVEN_CLI_OPTS -P GitLab-CI package'
+
+test-code:
+  stage: test
+  script:
+    - './mvnw -P GitLab-CI test'
+
+deploy:
+  stage: deploy
+  script:
+    - './mvnw -s ci_settings.xml -P GitLab-CI deploy'
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
