@@ -1,5 +1,5 @@
 default:
-  image: bitnami/java:11
+  image: eclipse-temurin:11-jdk-alpine
 
 stages:
   - build
@@ -16,16 +16,16 @@ variables:
 build-JAR:
   stage: build
   script:
-    - './mvnw $MAVEN_CLI_OPTS -P GitLab-CI package'
+    - './mvnw $MAVEN_CLI_OPTS package'
 
 test-code:
   stage: test
   script:
-    - './mvnw -P GitLab-CI test'
+    - './mvnw test'
 
 deploy:
   stage: deploy
   script:
-    - './mvnw -s ci_settings.xml -P GitLab-CI deploy'
+    - './mvnw -s ci_settings.xml deploy'
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
