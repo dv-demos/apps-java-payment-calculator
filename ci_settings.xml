@@ -6,8 +6,8 @@
       <configuration>
         <httpHeaders>
           <property>
-            <name>Private-Token</name>
-            <value>${JGB_PERSONAL_ACCESS_TOKEN}</value>
+            <name>Job-Token</name>
+            <value>${CI_JOB_TOKEN}</value>
           </property>
         </httpHeaders>
       </configuration>

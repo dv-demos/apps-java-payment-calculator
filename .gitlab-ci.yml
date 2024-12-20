@@ -1,5 +1,5 @@
 default:
-  image: eclipse-temurin:11-jdk-noble
+  image: eclipse-temurin:11-jdk-alpine
 
 stages:
   - build
@@ -16,12 +16,12 @@ variables:
 build-JAR:
   stage: build
   script:
-    - './mvnw $MAVEN_CLI_OPTS package'
+    - './mvnw $MAVEN_CLI_OPTS -s ci_settings.xml package'
 
 test-code:
   stage: test
   script:
-    - './mvnw test'
+    - './mvnw -s ci_settings.xml test'
 
 deploy:
   stage: deploy
