@@ -96,11 +96,13 @@
   <distributionManagement>
     <repository>
       <id>gitlab-maven</id>
-      <url>https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/packages/maven</url>
+      <!--suppress UnresolvedMavenProperty -->
+      <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
     </repository>
     <snapshotRepository>
       <id>gitlab-maven</id>
-      <url>https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/packages/maven</url>
+      <!--suppress UnresolvedMavenProperty -->
+      <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
     </snapshotRepository>
   </distributionManagement>
 
