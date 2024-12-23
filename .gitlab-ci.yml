@@ -1,5 +1,5 @@
 default:
-  image: eclipse-temurin:11-jdk-alpine
+  image: eclipse-temurin:11-jdk-noble
 
 stages:
   - build
