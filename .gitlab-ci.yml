@@ -7,6 +7,7 @@ stages:
   - deploy
 
 variables:
+  DOCKER_HOST: tcp://docker:2375
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
     -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
@@ -17,6 +18,8 @@ build-JAR:
   stage: build
   script:
     - './mvnw $MAVEN_CLI_OPTS -s ci_settings.xml package'
+  services:
+    - docker:20.10.16-dind
 
 test-code:
   stage: test
@@ -30,6 +33,15 @@ deploy:
     - apt install docker.io -y
     - docker --version
   script:
-    - './mvnw -s ci_settings.xml deploy'
+    - |
+      ./mvnw deploy \
+           -s ci_settings.xml \
+           -Ddocker.publishRegistry.url=${CI_REGISTRY} \
+           -Ddocker.publishRegistry.username=${CI_REGISTRY_USER} \
+           -Ddocker.publishRegistry.password=${CI_JOB_TOKEN} \
+           -Dimage.prefix=${CI_REGISTRY}/cloudnative20031/apps/LoanCalculator/java-payment-calculator \
+           -Dimage.publish=true
+  services:
+    - docker:20.10.16-dind
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

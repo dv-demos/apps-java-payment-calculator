@@ -34,6 +34,9 @@
   <properties>
     <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <image.prefix>local</image.prefix>
+    <image.name>${image.prefix}/${project.artifactId}:${project.version}</image.name>
+    <image.publish>false</image.publish>
   </properties>
 
   <build>
@@ -41,6 +44,19 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build-image</goal>
+            </goals>
+            <configuration>
+              <image>
+                <name>${image.name}</name>
+                <publish>${image.publish}</publish>
+              </image>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -105,5 +121,34 @@
       <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
     </snapshotRepository>
   </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>ci-docker-publish</id>
+      <activation>
+        <property>
+          <name>env.CI</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <docker>
+                <publishRegistry>
+                  <url>${docker.publishRegistry.url}</url>
+                  <username>${docker.publishRegistry.username}</username>
+                  <password>${docker.publishRegistry.password}</password>
+                </publishRegistry>
+              </docker>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
