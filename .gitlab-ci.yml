@@ -35,7 +35,7 @@ deploy:
   script:
     - |
       ./mvnw deploy \
-           -s .ci/settings.xml \
+           -s ci_settings.xml \
            -Ddocker.publishRegistry.url=${CI_REGISTRY} \
            -Ddocker.publishRegistry.username=${CI_REGISTRY_USER} \
            -Ddocker.publishRegistry.password=${CI_JOB_TOKEN} \
