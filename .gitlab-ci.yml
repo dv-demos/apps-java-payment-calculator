@@ -30,6 +30,13 @@ deploy:
     - apt install docker.io -y
     - docker --version
   script:
-    - './mvnw -s ci_settings.xml deploy'
+    - |
+      ./mvnw deploy \
+           -s .ci/settings.xml \
+           -Ddocker.publishRegistry.url=${CI_REGISTRY} \
+           -Ddocker.publishRegistry.username=${CI_REGISTRY_USER} \
+           -Ddocker.publishRegistry.password=${CI_JOB_TOKEN} \
+           -Dimage.prefix=${CI_REGISTRY}/cloudnative20031/apps/LoanCalculator/java-payment-calculator \
+           -Dimage.publish=true
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
