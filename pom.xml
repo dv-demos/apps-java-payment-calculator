@@ -49,13 +49,14 @@
             <goals>
               <goal>build-image</goal>
             </goals>
-            <configuration>
-              <image>
-                <name>${image.name}</name>
-              </image>
-            </configuration>
+            <phase>deploy</phase>
           </execution>
         </executions>
+        <configuration>
+          <image>
+            <name>${image.name}</name>
+          </image>
+        </configuration>
       </plugin>
     </plugins>
   </build>
