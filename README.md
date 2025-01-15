@@ -27,3 +27,8 @@ authenticate to GitLab. Here are the steps:
      </servers>
    </settings>
    ```
+
+> **NOTE:** On macOS, later versions of Docker Desktop do not create the Docker socket, that older versions of the Spring Boot plugin use. This can be worked around with a symlink:
+> ```sh
+> sudo ln ~/.docker/run/docker.sock /var/run/docker.sock
+> ```
