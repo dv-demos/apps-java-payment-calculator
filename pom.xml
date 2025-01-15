@@ -30,10 +30,12 @@
   <name>Java Payment Calculator</name>
   <description>Loan Calculator Microservice</description>
   <inceptionYear>2024</inceptionYear>
+  <url>https://gitlab.com/cloudnative20031/apps/LoanCalculator/java-payment-calculator</url>
 
   <properties>
     <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <image.name>local/${project.artifactId}:${project.version}</image.name>
   </properties>
 
   <build>
@@ -41,6 +43,20 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>build-image</id>
+            <goals>
+              <goal>build-image</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <image>
+            <name>${image.name}</name>
+          </image>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -105,5 +121,40 @@
       <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
     </snapshotRepository>
   </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>ci</id>
+      <activation>
+        <property>
+          <name>env.CI</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <image.name>${env.CI_REGISTRY_IMAGE}:${env.CI_COMMIT_REF_SLUG}</image.name>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <image>
+                <publish>true</publish>
+              </image>
+              <docker>
+                <publishRegistry>
+                  <url>${env.CI_REGISTRY}</url>
+                  <username>${env.CI_REGISTRY_USER}</username>
+                  <password>${env.CI_JOB_TOKEN}</password>
+                </publishRegistry>
+              </docker>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
