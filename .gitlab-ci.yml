@@ -17,12 +17,12 @@ variables:
 build-JAR:
   stage: build
   script:
-    - './mvnw $MAVEN_CLI_OPTS -s ci_settings.xml package'
+    - './mvnw $MAVEN_CLI_OPTS -ntp -s ci_settings.xml package'
 
 test-code:
   stage: test
   script:
-    - './mvnw -s ci_settings.xml test'
+    - './mvnw -ntp -s ci_settings.xml test'
 
 deploy:
   stage: deploy
@@ -41,7 +41,7 @@ deploy:
     - docker --version
     - cosign version
   script:
-    - './mvnw -s ci_settings.xml deploy'
+    - './mvnw -ntp -s ci_settings.xml deploy'
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_TAG)
     - cosign sign $IMAGE_DIGEST
