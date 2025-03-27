@@ -60,6 +60,7 @@ jf rt build-publish ${BUILD_NAME} ${BUILD_NUMBER}
 
 echo "Creating Develocity attestation file"
 curl ${dvAttestationUrl} -o dv-build-scan-attestation-org.json
+cat dv-build-scan-attestation-org.json | jq .predicate
 cat dv-build-scan-attestation-org.json | jq .predicate > dv-build-scan-attestation.json
 
 echo "Attach build scan attestation to build"
@@ -89,3 +90,7 @@ jf evd create \
   --release-bundle-version ${BUILD_NUMBER} \
   --predicate ./dv-build-scan-attestation.json \
   --predicate-type https://develocity.com/provenance/v1
+
+echo "**************************"
+echo "** ${IMAGE_NAME_SHA#*@} **"
+echo "**************************"
