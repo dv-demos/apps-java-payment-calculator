@@ -43,9 +43,6 @@ pushToJFrog:
     - jf --version
   script:
     - './mvnw -ntp -s ci_settings.xml deploy'
-#    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
-#    - IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_TAG)
-    - #cosign sign $IMAGE_DIGEST
     - ./evidence.sh
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

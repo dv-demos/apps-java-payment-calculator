@@ -18,7 +18,7 @@ buildScan.link("Project Repository", projectUrl)
 // Process this block after the build as finished and when no failures
 buildScan.buildFinished(result -> {
     if (result.getFailures().empty) {
-        buildScan.value("artifacts", artifactsAsJson())
+//        buildScan.value("artifacts", artifactsAsJson())
 
         // if 'docker' is available on the path add custom values
         // capture docker image info when `image.name` property is set in the pom
