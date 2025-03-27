@@ -91,6 +91,9 @@ jf evd create \
   --predicate ./dv-build-scan-attestation.json \
   --predicate-type https://develocity.com/provenance/v1
 
-echo "**************************"
+echo
+echo "*****************************************************************************"
+echo "** Docker Image sha256:                                                    **"
 echo "** ${IMAGE_NAME_SHA#*@} **"
-echo "**************************"
+echo "*****************************************************************************"
+echo
