@@ -8,6 +8,7 @@ stages:
   - deploy
 
 variables:
+  CI_DEBUG_SERVICES: "true"
   DOCKER_HOST: tcp://docker:2375
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
