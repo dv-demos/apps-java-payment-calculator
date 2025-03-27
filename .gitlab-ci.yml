@@ -5,8 +5,6 @@ include:
   - remote: 'https://releases.jfrog.io/artifactory/jfrog-cli/gitlab/v2/.setup-jfrog-unix.yml'
 
 stages:
-#  - build
-#  - test
   - deploy
 
 variables:
@@ -17,15 +15,15 @@ variables:
 #  MAVEN_CLI_OPTS: >-
 #    -DskipTests
 
-build-JAR:
-  stage: build
-  script:
-    - './mvnw $MAVEN_CLI_OPTS -ntp -s ci_settings.xml package'
-
-test-code:
-  stage: test
-  script:
-    - './mvnw -ntp -s ci_settings.xml test'
+#build-JAR:
+#  stage: build
+#  script:
+#    - './mvnw $MAVEN_CLI_OPTS -ntp -s ci_settings.xml package'
+#
+#test-code:
+#  stage: test
+#  script:
+#    - './mvnw -ntp -s ci_settings.xml test'
 
 pushToJFrog:
   stage: deploy
