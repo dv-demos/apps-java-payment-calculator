@@ -56,7 +56,7 @@ jf rt build-collect-env ${BUILD_NAME} ${BUILD_NUMBER}
 
 # Publish build info to Artifactory
 echo "Publishing build info"
-jfrog rt build-publish ${BUILD_NAME} ${BUILD_NUMBER}
+jf rt build-publish ${BUILD_NAME} ${BUILD_NUMBER}
 
 echo "Creating Develocity attestation file"
 curl ${dvAttestationUrl} -o dv-build-scan-attestation-org.json
