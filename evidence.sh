@@ -32,15 +32,15 @@ jf rt build-docker-create \
   --build-number ${BUILD_NUMBER}
 
 # Create attestation
-echo "Creating build attestation file"
+echo "Creating build attestation package"
 jq -n \
   --arg actor "${BUILD_ACTOR}" \
   --arg date $(date -u +"%Y-%m-%dT%H:%M:%SZ") \
   '{actor: $actor, date: $date}' \
   > actor-attestation.json
 
-# Attach attestation to build
-echo "Attaching attestation file to build"
+# Attach attestation to package
+echo "Attaching attestation file to package"
 jf evd create \
   --package-name ${IMAGE_NAME_SHORT} \
   --package-version ${IMAGE_TAG} \
@@ -67,6 +67,14 @@ echo "Attach build scan attestation to build"
 jf evd create \
   --build-name ${BUILD_NAME} \
   --build-number ${BUILD_NUMBER} \
+  --predicate ./dv-build-scan-attestation.json \
+  --predicate-type https://develocity.com/provenance/v1
+
+echo "Attaching dv attestation file to package"
+jf evd create \
+  --package-name ${IMAGE_NAME_SHORT} \
+  --package-version ${IMAGE_TAG} \
+  --package-repo-name ${DOCKER_REPO} \
   --predicate ./dv-build-scan-attestation.json \
   --predicate-type https://develocity.com/provenance/v1
 
