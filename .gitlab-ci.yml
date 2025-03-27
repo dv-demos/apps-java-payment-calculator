@@ -1,9 +1,12 @@
 default:
   image: eclipse-temurin:11-jdk-alpine
 
+include:
+  - remote: 'https://releases.jfrog.io/artifactory/jfrog-cli/gitlab/v2/.setup-jfrog-unix.yml'
+
 stages:
-  - build
-  - test
+#  - build
+#  - test
   - deploy
 
 variables:
@@ -11,8 +14,8 @@ variables:
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
     -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
-  MAVEN_CLI_OPTS: >-
-    -DskipTests
+#  MAVEN_CLI_OPTS: >-
+#    -DskipTests
 
 build-JAR:
   stage: build
@@ -24,26 +27,25 @@ test-code:
   script:
     - './mvnw -ntp -s ci_settings.xml test'
 
-deploy:
+pushToJFrog:
   stage: deploy
   services:
+    - name: registry.gitlab.com/cloudnative20031/opa/develocity-attestation-generator:main
+      alias: develocity
     - docker:26.1.3-dind
-  variables:
-    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    COSIGN_YES: true
-  id_tokens:
-    SIGSTORE_ID_TOKEN:
-      aud: sigstore
   before_script:
     - apk update
     - apk add docker
-    - apk add cosign
+    - apk add jq
+    - apk add curl
     - docker --version
-    - cosign version
+    - !reference [.setup_jfrog, script]
+    - jf --version
   script:
     - './mvnw -ntp -s ci_settings.xml deploy'
-    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
-    - IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_TAG)
-    - cosign sign $IMAGE_DIGEST
+#    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+#    - IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_TAG)
+    - #cosign sign $IMAGE_DIGEST
+    - ./evidence.sh
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

@@ -36,6 +36,7 @@
     <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <image.name>local/${project.artifactId}:${project.version}</image.name>
+    <attestationServiceUrl>http://localhost:8080</attestationServiceUrl>
 
     <!-- force unique hashes for demo purposes -->
     <timestamp>${maven.build.timestamp}</timestamp>
@@ -144,7 +145,8 @@
         </property>
       </activation>
       <properties>
-        <image.name>${env.CI_REGISTRY_IMAGE}:${env.CI_COMMIT_REF_SLUG}</image.name>
+        <image.name>develocitytia.jfrog.io/docker-trial/${project.artifactId}:${project.version}-${env.CI_JOB_ID}</image.name>
+        <attestationServiceUrl>http://develocity:8080</attestationServiceUrl>
       </properties>
       <build>
         <plugins>
@@ -157,9 +159,9 @@
               </image>
               <docker>
                 <publishRegistry>
-                  <url>${env.CI_REGISTRY}</url>
-                  <username>${env.CI_REGISTRY_USER}</username>
-                  <password>${env.CI_JOB_TOKEN}</password>
+                  <url>develocitytia.jfrog.io</url>
+                  <username>${env.JF_USER}</username>
+                  <password>${env.JF_ACCESS_TOKEN}</password>
                 </publishRegistry>
               </docker>
             </configuration>
