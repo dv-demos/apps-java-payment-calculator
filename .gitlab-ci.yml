@@ -33,6 +33,7 @@ pushToJFrog:
     - docker:26.1.3-dind
   before_script:
     - apk update
+    - apk add bash
     - apk add docker
     - apk add jq
     - apk add curl
