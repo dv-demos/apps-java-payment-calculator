@@ -8,7 +8,8 @@ stages:
   - deploy
 
 variables:
-  CI_DEBUG_SERVICES: "true"
+  DEVELOCITY_URL: https://develocity.sdlc-demo.gradle.com/
+  DEVELOCITY_ACCESS_KEY: $DV_ACCESS_KEY_RAW
   DOCKER_HOST: tcp://docker:2375
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
