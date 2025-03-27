@@ -59,7 +59,9 @@ echo "Publishing build info"
 jf rt build-publish ${BUILD_NAME} ${BUILD_NUMBER}
 
 echo "Creating Develocity attestation file"
+echo "URL: ${dvAttestationUrl}"
 curl ${dvAttestationUrl} -o dv-build-scan-attestation-org.json
+cat dv-build-scan-attestation-org.json
 cat dv-build-scan-attestation-org.json | jq .predicate
 cat dv-build-scan-attestation-org.json | jq .predicate > dv-build-scan-attestation.json
 
