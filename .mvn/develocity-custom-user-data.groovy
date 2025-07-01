@@ -37,21 +37,22 @@ buildScan.buildFinished(result -> {
             }
         }
     }
-})
-buildScan.buildScanPublished(action -> {
-    String dockerImage = project.getProperties().getProperty("image.name")
-    def (dockerImageName, dockerImageTag) = dockerImage.tokenize(':')
 
-    String props = "buildScanUrl=${action.getBuildScanUri()}\n"
-    props += "dvAttestationUrl=${project.getProperties().getProperty("attestationServiceUrl")}/develocity/attestation/${action.getBuildScanId()}\n"
-    props += "buildScanId=${action.getBuildScanId()}\n"
-    props += "user=${System.getProperty("user.name")}\n"
-    props += "version=${project.version}\n"
-    props += "imageName=${dockerImageName}\n"
-    props += "imageTag=${dockerImageTag}\n"
-    props += "repo=docker-trial\n"
-    props += "sign_key=default-rsa-key\n"
-    new File(project.getBuild().getDirectory(), "build-scan.properties") << props
+    buildScan.buildScanPublished(action -> {
+        String dockerImage = project.getProperties().getProperty("image.name")
+        def (dockerImageName, dockerImageTag) = dockerImage.tokenize(':')
+
+        String props = "buildScanUrl=${action.getBuildScanUri()}\n"
+        props += "dvAttestationUrl=${project.getProperties().getProperty("attestationServiceUrl")}/develocity/attestation/${action.getBuildScanId()}\n"
+        props += "buildScanId=${action.getBuildScanId()}\n"
+        props += "user=${System.getProperty("user.name")}\n"
+        props += "version=${project.version}\n"
+        props += "imageName=${dockerImageName}\n"
+        props += "imageTag=${dockerImageTag}\n"
+        props += "repo=docker-trial\n"
+        props += "sign_key=default-rsa-key\n"
+        new File(project.getBuild().getDirectory(), "build-scan.properties") << props
+    })
 })
 
 String artifactsAsJson() {
