@@ -16,7 +16,7 @@ jobs:
 
     services:
       develocity-attestations:
-        image: registry.gitlab.com/cloudnative20031/opa/develocity-attestation-generator:main
+        image: develocitytia.jfrog.io/docker-ci/develocity-attestation-generator:main
         env:
           DEVELOCITY_URL: https://develocity.sdlc-demo.gradle.com/
           DEVELOCITY_ACCESS_KEY: ${{ secrets.dv_access_key }}
