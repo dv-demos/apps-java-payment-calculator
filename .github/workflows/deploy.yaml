@@ -65,7 +65,8 @@ jobs:
           # start async workflow
           gh workflow run qa.yaml \
             --repo 'dv-demos/qa-payment-calculator' \
-            --raw-field image_purl="${ociImage}" \ 
+            --ref 'main' \
+            --raw-field image_purl="${ociImage}" \
             --raw-field image_sha256="${imageDigest}" \
             --raw-field image_repo_url="develocitytia.jfrog.io/${repo}" \
             --raw-field image_repo_name="${repo}"
