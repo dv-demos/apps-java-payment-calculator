@@ -54,3 +54,5 @@ jobs:
 
       - name: Publish Evidence
         run: ./evidence.sh
+        env:
+          JFROG_CLI_SIGNING_KEY: ${{ secrets.JFROG_CLI_SIGNING_KEY }}
