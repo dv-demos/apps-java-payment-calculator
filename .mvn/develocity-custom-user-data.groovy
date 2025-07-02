@@ -15,6 +15,8 @@ def projectUrl = session.getTopLevelProject().getUrl()
 buildScan.value("Project URL", projectUrl)
 buildScan.link("Project Repository", projectUrl)
 
+String imageDigest = null
+
 // Process this block after the build as finished and when no failures
 buildScan.buildFinished(result -> {
     if (result.getFailures().empty) {
@@ -26,7 +28,7 @@ buildScan.buildFinished(result -> {
             String dockerImage = project.getProperties().getProperty("image.name")
             if (dockerImage) {
                 def (dockerImageName, dockerImageTag) = dockerImage.tokenize(':')
-                String imageDigest = execAndGetStdOut('docker', 'inspect', '--format={{index .RepoDigests 0}}', dockerImage)
+                imageDigest = execAndGetStdOut('docker', 'inspect', '--format={{index .RepoDigests 0}}', dockerImage)
 
                 // docker image info (only available if image was published)
                 if (imageDigest) {
@@ -51,6 +53,7 @@ buildScan.buildFinished(result -> {
         props += "imageTag=${dockerImageTag}\n"
         props += "repo=docker-trial\n"
         props += "sign_key=default-rsa-key\n"
+        props += "ociImage=${imageDigest}"
         new File(project.getBuild().getDirectory(), "build-scan.properties") << props
     })
 })

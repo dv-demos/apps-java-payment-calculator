@@ -56,3 +56,20 @@ jobs:
         run: ./evidence.sh
         env:
           JFROG_CLI_SIGNING_KEY: ${{ secrets.JFROG_CLI_SIGNING_KEY }}
+
+      - name: Build Summary
+        run: |
+          source target/build-scan.properties
+  
+          cat << EOF > ${GITHUB_STEP_SUMMARY}
+          ## Docker Image Published
+          
+          ---
+          
+          - **Image:** ${ociImage}
+          - **Tag:** ${imageTag}
+            
+          See more details in [Build Scan](${buildScanUrl})
+          
+          ---
+          EOF
