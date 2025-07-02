@@ -30,7 +30,7 @@
   <url>https://github.com/dv-demos/apps-java-payment-calculator</url>
 
   <properties>
-    <java.version>17</java.version>
+    <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <image.name>local/${project.artifactId}:${project.version}</image.name>
     <attestationServiceUrl>http://localhost:8080</attestationServiceUrl>
