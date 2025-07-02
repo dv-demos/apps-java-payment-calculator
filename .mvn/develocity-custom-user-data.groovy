@@ -51,9 +51,10 @@ buildScan.buildFinished(result -> {
         props += "version=${project.version}\n"
         props += "imageName=${dockerImageName}\n"
         props += "imageTag=${dockerImageTag}\n"
+        props += "imageDigest=${imageDigest.tokenize('@').last()}\n"
         props += "repo=docker-trial\n"
         props += "sign_key=default-rsa-key\n"
-        props += "ociImage=${imageDigest}"
+        props += "ociImage=${imageDigest}\n"
         new File(project.getBuild().getDirectory(), "build-scan.properties") << props
     })
 })
