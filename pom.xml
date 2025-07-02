@@ -146,7 +146,7 @@
       </activation>
       <properties>
         <image.name>develocitytia.jfrog.io/docker-trial/${project.artifactId}:${project.version}-${env.CI_ID}</image.name>
-        <attestationServiceUrl>http://develocity:8080</attestationServiceUrl>
+        <attestationServiceUrl>http://localhost:8080</attestationServiceUrl>
       </properties>
       <build>
         <plugins>
