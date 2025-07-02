@@ -15,7 +15,7 @@ jobs:
       MAVEN_ARGS: -V -B --no-transfer-progress
 
     services:
-      develocity-attestations:
+      develocity:
         image: develocitytia.jfrog.io/docker-ci/develocity-attestation-generator:main
         env:
           DEVELOCITY_URL: https://develocity.sdlc-demo.gradle.com/
