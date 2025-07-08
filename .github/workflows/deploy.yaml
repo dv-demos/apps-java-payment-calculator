@@ -51,7 +51,7 @@ jobs:
         env:
           JFROG_USER: ${{ steps.jfrog.outputs.oidc-user }}
           JFROG_PASSWORD: ${{ steps.jfrog.outputs.oidc-token }}
-          CI_ID: ${{ github.run_id }}
+          CI_ID: ${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Publish Evidence
         run: ./evidence.sh
