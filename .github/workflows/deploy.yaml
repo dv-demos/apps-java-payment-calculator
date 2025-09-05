@@ -64,6 +64,11 @@ jobs:
           subject-type: oci
           subject-repository-url: develocitytia.jfrog.io/docker-trial
 
+      - name: Output OCI Pull URL to Summary
+        run: |
+          echo "## OCI Image Pull Information" >> $GITHUB_STEP_SUMMARY
+          echo "\`docker pull develocitytia.jfrog.io/${{ steps.mvn_deploy.outputs.repo }}/${{ steps.mvn_deploy.outputs.baseImageName }}:${{ steps.mvn_deploy.outputs.imageTag }}@${{ steps.mvn_deploy.outputs.imageDigest }}\`" >> $GITHUB_STEP_SUMMARY
+
   asyc-qa:
     runs-on: ubuntu-latest
     needs: build
