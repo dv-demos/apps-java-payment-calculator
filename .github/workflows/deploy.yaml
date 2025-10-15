@@ -56,7 +56,6 @@ jobs:
       - uses: gradle/develocity-provenance-governor-actions/publish@main
         with:
           attestation-publisher-url: 'https://cavendish.sdlc-demo.gradle.com'
-          tenant: default
           build-scan-queries: 'value:"CI run=${{ github.run_id }}"'
           subject-name: ${{ steps.mvn_deploy.outputs.baseImageName }}
           subject-version: ${{ steps.mvn_deploy.outputs.imageTag }}
