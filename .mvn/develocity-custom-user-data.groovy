@@ -41,34 +41,36 @@ buildScan.buildFinished(result -> {
         }
     }
 
-    buildScan.buildScanPublished(action -> {
-        String dockerImage = project.getProperties().getProperty("image.name")
-        def (dockerImageName, dockerImageTag) = dockerImage.tokenize(':')
-        def dockerBaseImageName = dockerImageName?.tokenize('/')?.last()
-        def simpleDigest = imageDigest.tokenize('@').last().replaceFirst("^sha256\\:", "")
+    if (session.getGoals().contains("deploy")) {
+        buildScan.buildScanPublished(action -> {
+            String dockerImage = project.getProperties().getProperty("image.name")
+            def (dockerImageName, dockerImageTag) = dockerImage.tokenize(':')
+            def dockerBaseImageName = dockerImageName?.tokenize('/')?.last()
+            def simpleDigest = imageDigest.tokenize('@').last().replaceFirst("^sha256\\:", "")
 
-        String props = "buildScanUrl=${action.getBuildScanUri()}\n"
-        props += "dvAttestationUrl=${project.getProperties().getProperty("attestationServiceUrl")}/develocity/attestation/${action.getBuildScanId()}\n"
-        props += "buildScanId=${action.getBuildScanId()}\n"
-        props += "user=${System.getProperty("user.name")}\n"
-        props += "version=${project.version}\n"
-        props += "imageName=${dockerImageName}\n"
-        props += "baseImageName=${dockerBaseImageName}\n"
-        props += "imageTag=${dockerImageTag}\n"
-        props += "imageDigest=${simpleDigest}\n"
-        props += "repo=docker-trial\n"
-        props += "sign_key=default-rsa-key\n"
-        props += "ociImage=${imageDigest}\n"
-        new File(project.getBuild().getDirectory(), "build-scan.properties") << props
+            String props = "buildScanUrl=${action.getBuildScanUri()}\n"
+            props += "dvAttestationUrl=${project.getProperties().getProperty("attestationServiceUrl")}/develocity/attestation/${action.getBuildScanId()}\n"
+            props += "buildScanId=${action.getBuildScanId()}\n"
+            props += "user=${System.getProperty("user.name")}\n"
+            props += "version=${project.version}\n"
+            props += "imageName=${dockerImageName}\n"
+            props += "baseImageName=${dockerBaseImageName}\n"
+            props += "imageTag=${dockerImageTag}\n"
+            props += "imageDigest=${simpleDigest}\n"
+            props += "repo=docker-trial\n"
+            props += "sign_key=default-rsa-key\n"
+            props += "ociImage=${imageDigest}\n"
+            new File(project.getBuild().getDirectory(), "build-scan.properties") << props
 
-        // When running in GitHub, also set these properties as step outputs
-        envVariable("GITHUB_OUTPUT")
-            .map(value -> new File(value))
-            .ifPresent(githubOutputFile -> {
-                System.out.println("Setting GitHub Action outputs: " + githubOutputFile)
-                githubOutputFile << props
-            })
-    })
+            // When running in GitHub, also set these properties as step outputs
+            envVariable("GITHUB_OUTPUT")
+                    .map(value -> new File(value))
+                    .ifPresent(githubOutputFile -> {
+                        System.out.println("Setting GitHub Action outputs: " + githubOutputFile)
+                        githubOutputFile << props
+                    })
+        })
+    }
 })
 
 String artifactsAsJson() {
