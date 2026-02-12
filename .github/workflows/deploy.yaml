@@ -53,7 +53,7 @@ jobs:
           CI_ID: ${{ github.run_id }}-${{ github.run_attempt }} # Used to make docker tags unique for demo
         # This step writes outputs via .mvn/develocity-custom-user-data.groovy (to be used in the next step)
 
-      - uses: gradle/develocity-provenance-governor-actions/publish@main
+      - uses: gradle/develocity-provenance-governor-actions/publish@release/artifactoryLinks
         with:
           attestation-publisher-url: 'https://develocity-provenance-governor.sdlc-demo.gradle.com'
           build-scan-queries: 'value:"CI run=${{ github.run_id }}"'
