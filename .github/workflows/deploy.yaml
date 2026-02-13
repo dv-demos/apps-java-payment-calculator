@@ -53,6 +53,16 @@ jobs:
           CI_ID: ${{ github.run_id }}-${{ github.run_attempt }} # Used to make docker tags unique for demo
         # This step writes outputs via .mvn/develocity-custom-user-data.groovy (to be used in the next step)
 
+      - uses: gradle/develocity-provenance-governor-actions/publish@release/artifactoryLinks
+        with:
+          attestation-publisher-url: 'https://develocity-provenance-governor.sdlc-demo.gradle.com'
+          build-scan-queries: 'value:"CI run=${{ github.run_id }}"'
+          subject-name: ${{ steps.mvn_deploy.outputs.baseImageName }}
+          subject-version: ${{ steps.mvn_deploy.outputs.imageTag }}
+          subject-digest: ${{ steps.mvn_deploy.outputs.imageDigest }}
+          subject-type: oci
+          subject-repository-url: develocitytia.jfrog.io/docker-trial
+
       - name: Output OCI Pull URL to Summary
         run: |
           echo "## OCI Image Pull Information" >> $GITHUB_STEP_SUMMARY
