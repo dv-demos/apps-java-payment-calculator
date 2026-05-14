@@ -42,7 +42,7 @@ jobs:
           server-password: JFROG_PASSWORD
 
       - name: Setup Maven
-        uses: gradle/develocity-actions/maven-publish-build-scan@v2.0
+        uses: gradle/develocity-actions/setup-maven@v2.0
         with:
           develocity-access-key: ${{ secrets.DV_ACCESS_KEY }}
 
