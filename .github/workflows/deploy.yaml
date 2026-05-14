@@ -65,6 +65,18 @@ jobs:
           subject-type: oci
           subject-repository-url: develocitytia.jfrog.io/docker-trial
 
+      - name: Verify Image
+        id: policy
+        uses: gradle/develocity-provenance-governor-actions/enforce@main
+        with:
+          policy-evaluator-url: 'https://develocity-provenance-governor-field.gradle.com'
+          subject-type: oci
+          subject-name: ${{ steps.mvn_deploy.outputs.baseImageName }}
+          subject-version: ${{ steps.mvn_deploy.outputs.imageTag }}
+          subject-digest: ${{ steps.mvn_deploy.outputs.imageDigest }}
+          subject-repository-url: develocitytia.jfrog.io/docker-trial
+          policy-scan: dvplugin-initial-build-gate
+
       - name: Output OCI Pull URL to Summary
         run: |
           echo "## OCI Image Pull Information" >> $GITHUB_STEP_SUMMARY
