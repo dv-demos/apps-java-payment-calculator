@@ -55,7 +55,7 @@ jobs:
 
       - uses: gradle/develocity-provenance-governor-actions/publish@release/artifactoryLinks
         with:
-          attestation-publisher-url: 'https://develocity-provenance-governor.sdlc-demo.gradle.com'
+          attestation-publisher-url: 'https://develocity-provenance-governor-field.gradle.com'
           build-scan-queries: 'value:"CI run=${{ github.run_id }}"'
           subject-name: ${{ steps.mvn_deploy.outputs.baseImageName }}
           subject-version: ${{ steps.mvn_deploy.outputs.imageTag }}
