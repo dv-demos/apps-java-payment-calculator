@@ -75,7 +75,7 @@ jobs:
           subject-version: ${{ steps.mvn_deploy.outputs.imageTag }}
           subject-digest: ${{ steps.mvn_deploy.outputs.imageDigest }}
           subject-repository-url: develocitytia.jfrog.io/docker-trial
-          policy-scan: Build
+          policy-scan: publish-artifact
 
       - name: Output OCI Pull URL to Summary
         run: |
